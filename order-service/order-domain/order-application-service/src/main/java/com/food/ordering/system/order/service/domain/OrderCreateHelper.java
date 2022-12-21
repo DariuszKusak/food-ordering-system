@@ -1,17 +1,16 @@
-package com.food.ordering.system.order.service.domain.dto;
+package com.food.ordering.system.order.service.domain;
 
-import com.food.ordering.system.order.service.domain.dto.dto.create.CreateOrderCommand;
-import com.food.ordering.system.order.service.domain.dto.dto.create.CreateOrderResponse;
-import com.food.ordering.system.order.service.domain.dto.mapper.OrderDataMapper;
+import com.food.ordering.system.order.service.domain.dto.create.CreateOrderCommand;
 import com.food.ordering.system.order.service.domain.dto.order.service.domain.OrderDomainService;
 import com.food.ordering.system.order.service.domain.dto.order.service.domain.enity.Customer;
 import com.food.ordering.system.order.service.domain.dto.order.service.domain.enity.Order;
 import com.food.ordering.system.order.service.domain.dto.order.service.domain.enity.Restaurant;
 import com.food.ordering.system.order.service.domain.dto.order.service.domain.event.OrderCreatedEvent;
 import com.food.ordering.system.order.service.domain.dto.order.service.domain.exception.OrderDomainException;
-import com.food.ordering.system.order.service.domain.dto.ports.output.repository.CustomerRepository;
-import com.food.ordering.system.order.service.domain.dto.ports.output.repository.OrderRepository;
-import com.food.ordering.system.order.service.domain.dto.ports.output.repository.RestaurantRepository;
+import com.food.ordering.system.order.service.domain.mapper.OrderDataMapper;
+import com.food.ordering.system.order.service.domain.ports.output.repository.CustomerRepository;
+import com.food.ordering.system.order.service.domain.ports.output.repository.OrderRepository;
+import com.food.ordering.system.order.service.domain.ports.output.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,10 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequiredArgsConstructor
 @Slf4j
 @Component
-public class OrderCreateCommandHandler {
+@RequiredArgsConstructor
+public class OrderCreateHelper {
     private final OrderDomainService orderDomainService;
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
@@ -31,14 +30,14 @@ public class OrderCreateCommandHandler {
     private final OrderDataMapper orderDataMapper;
 
     @Transactional
-    public CreateOrderResponse createOrder(CreateOrderCommand createOrderCommand) {
+    public OrderCreatedEvent persistOrder(CreateOrderCommand createOrderCommand) {
         checkCustomer(createOrderCommand.getCustomerId());
         Restaurant restaurant = checkRestaurant(createOrderCommand);
         Order order = orderDataMapper.createOrderCommandToOrder(createOrderCommand);
         OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitiate(order, restaurant);
-        Order orderResult = saveOrder(order);
-        log.info("Order is created with id: {}", orderResult.getId().getValue());
-        return orderDataMapper.orderToCreateOrderResponse(orderResult);
+        saveOrder(order);
+        log.info("Order is created with id: {}", orderCreatedEvent.getOrder().getId().getValue());
+        return orderCreatedEvent;
     }
 
     private Order saveOrder(Order order) {

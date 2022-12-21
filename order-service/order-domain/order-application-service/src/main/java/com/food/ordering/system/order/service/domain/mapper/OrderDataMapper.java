@@ -1,12 +1,12 @@
-package com.food.ordering.system.order.service.domain.dto.mapper;
+package com.food.ordering.system.order.service.domain.mapper;
 
 import com.food.ordering.system.domain.valueobject.CustomerId;
 import com.food.ordering.system.domain.valueobject.Money;
 import com.food.ordering.system.domain.valueobject.ProductId;
 import com.food.ordering.system.domain.valueobject.RestaurantId;
-import com.food.ordering.system.order.service.domain.dto.dto.create.CreateOrderCommand;
-import com.food.ordering.system.order.service.domain.dto.dto.create.CreateOrderResponse;
-import com.food.ordering.system.order.service.domain.dto.dto.create.OrderAddress;
+import com.food.ordering.system.order.service.domain.dto.create.CreateOrderCommand;
+import com.food.ordering.system.order.service.domain.dto.create.CreateOrderResponse;
+import com.food.ordering.system.order.service.domain.dto.create.OrderAddress;
 import com.food.ordering.system.order.service.domain.dto.order.service.domain.enity.Order;
 import com.food.ordering.system.order.service.domain.dto.order.service.domain.enity.OrderItem;
 import com.food.ordering.system.order.service.domain.dto.order.service.domain.enity.Product;
@@ -43,7 +43,7 @@ public class OrderDataMapper {
                 .build();
     }
 
-    private List<OrderItem> orderItemsToOrderItemsEntities(List<com.food.ordering.system.order.service.domain.dto.dto.create.OrderItem> items) {
+    private List<OrderItem> orderItemsToOrderItemsEntities(List<com.food.ordering.system.order.service.domain.dto.create.OrderItem> items) {
         return items.stream()
                 .map(orderItem -> OrderItem.Builder.builder()
                         .product(new Product(new ProductId(orderItem.getProductId())))
