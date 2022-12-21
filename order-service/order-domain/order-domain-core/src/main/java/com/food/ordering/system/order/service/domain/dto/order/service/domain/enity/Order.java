@@ -2,13 +2,10 @@ package com.food.ordering.system.order.service.domain.dto.order.service.domain.e
 
 import com.food.ordering.system.domain.enity.AggregateRoot;
 import com.food.ordering.system.domain.valueobject.*;
-import com.food.ordering.system.domain.order.service.domain.dto.domain.value.object.*;
-import com.food.ordering.system.domain.value.object.*;
-import com.food.ordering.system.order.domain.value.object.*;
 import com.food.ordering.system.order.service.domain.dto.order.service.domain.exception.OrderDomainException;
-import com.food.ordering.system.order.service.domain.dto.order.service.domain.value.object.TrackingId;
 import com.food.ordering.system.order.service.domain.dto.order.service.domain.value.object.OrderItemId;
 import com.food.ordering.system.order.service.domain.dto.order.service.domain.value.object.StreetAddress;
+import com.food.ordering.system.order.service.domain.dto.order.service.domain.value.object.TrackingId;
 
 import java.util.List;
 import java.util.UUID;
